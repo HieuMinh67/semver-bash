@@ -97,3 +97,23 @@ _delete_git_branch() {
     git push origin -d "${branch_name}"
     git branch -D "${branch_name}"
 }
+
+_create_tag() {
+    tag_name=$1
+    message=$2
+
+    cd "${PROJECT_ROOT}"/test/sandbox/github/upstream
+
+    git tag -a "${tag_name}" -m "${message}"
+    git push --tags
+    git push origin "${tag_name}"
+}
+
+_delete_tag() {
+    tag_name=$1
+
+    cd "${PROJECT_ROOT}"/test/sandbox/github/upstream
+
+    git tag -d "${tag_name}"
+    git push origin --delete "${tag_name}"
+}

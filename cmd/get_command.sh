@@ -16,7 +16,8 @@ get_latest_tag() {
     TAG=$(git describe --abbrev=0 --tags --match "$RELEASE_VERSION"*)
   fi
   if [ -z "$TAG" ]; then
-    TAG=v0.1.0-alpha+0
+    exit 1
+#    TAG=v0.1.0-alpha+0
   fi
 }
 
