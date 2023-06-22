@@ -107,6 +107,8 @@ _create_tag() {
     git tag -a "${tag_name}" -m "${message}"
     git push --tags
     git push origin "${tag_name}"
+
+    sleep 5
 }
 
 _delete_tag() {
@@ -116,4 +118,35 @@ _delete_tag() {
 
     git tag -d "${tag_name}"
     git push origin --delete "${tag_name}"
+}
+
+_create_release() {
+    tag_name=$1
+    name=$2
+
+    github_adaptor="${PROJECT_ROOT}"/pkg/adaptors/github
+    github_openapi_client="${github_adaptor}"/openapi/client.sh
+
+    source "${github_openapi_client}"
+    source "${github_adaptor}"/execute_github_api.sh
+
+    GITHUB_TOKEN=${GITHUB_PAT_OWNER}
+    release_id=$(execute_github_api reposCreateRelease owner="${GITHUB_REPOSITORY_OWNER}" repo="${GITHUB_REPOSITORY_NAME}" tag_name:="\"${tag_name}\"" name:="\"${name}\"" | jq ".id")
+
+    echo "${release_id}"
+}
+
+_delete_release() {
+    release_id=$1
+
+    github_adaptor="${PROJECT_ROOT}"/pkg/adaptors/github
+    github_openapi_client="${github_adaptor}"/openapi/client.sh
+
+    source "${github_openapi_client}"
+    source "${github_adaptor}"/execute_github_api.sh
+
+    cd "${contributor_git_sandbox_repo}"
+
+    GITHUB_TOKEN=${GITHUB_PAT_OWNER}
+    execute_github_api reposDeleteRelease owner="${GITHUB_REPOSITORY_OWNER}" repo="${GITHUB_REPOSITORY_NAME}" release_id="${release_id}"
 }
