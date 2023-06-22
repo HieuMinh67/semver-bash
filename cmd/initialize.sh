@@ -21,6 +21,9 @@ case "${GIT_PLATFORM}" in
     # get_pr_git_adaptor=no_adaptor_available
     get_pr_git_adaptor=get_pr_github_adaptor
     get_workflow_run_git_adaptor=get_workflow_run_github_adaptor
+    get_latest_release_git_adaptor=get_latest_release_github_adaptor
+    get_release_by_tag_git_adaptor=get_release_by_tag_github_adaptor
+    get_ref_git_adaptor=get_ref_github_adaptor
     ;;
   *)
     get_pr_git_adaptor=no_adaptor_available
@@ -29,3 +32,6 @@ esac
 
 get_pr_git_port() { ${get_pr_git_adaptor} "$@"; }
 get_workflow_run_git_port() { ${get_workflow_run_git_adaptor} "$@"; }
+get_latest_release_git_port() { ${get_latest_release_git_adaptor} "$@"; }
+get_release_by_name_git_port() { ${get_release_by_tag_git_adaptor} "$@"; }
+get_ref_git_port() { ${get_ref_git_adaptor} "$@"; }

@@ -7,17 +7,17 @@ get_pr_git_port "${args[source_value]}"
 
 get_latest_tag() {
   current_branch=$1
-#  git fetch --unshallow --tags
-  if [ "$current_branch" = "master" ]; then
-    TAG=$(git describe --abbrev=0 --tags)
+  if [[ "$current_branch" == "master" || "$current_branch" == "main" ]]; then
+    tag=$(get_latest_release_git_port | jq ".tag_name")
   elif [[ "$current_branch" =~ ^release\/v[0-9]+\.[0-9]+$ ]]; then
-    RELEASE_VERSION=$(echo "$current_branch" | cut -d '/' -f 2)
-    echo "$RELEASE_VERSION"
-    TAG=$(git describe --abbrev=0 --tags --match "$RELEASE_VERSION"*)
+    release_version=$(echo "$current_branch" | cut -d '/' -f 2)
+    echo "$release_version"
+    tag=$(get_ref_git_port "tags/$release_version" | jq '.[0].ref' | sed 's/refs\/tags\///')
   fi
-  if [ -z "$TAG" ]; then
-    exit 1
-#    TAG=v0.1.0-alpha+0
+
+  if [ -z "$tag" ]; then
+#    exit 1
+    tag=v0.1.0-alpha+0
   fi
 }
 
@@ -40,12 +40,12 @@ sha=$(echo "$pr_details" | jq -r ".head.sha")
 get_workflow_run_git_port "$sha"
 build_number=$(echo "${workflow_run_details}" | jq -r ".workflow_runs[0].run_number")
 
-components=$(echo "$TAG" | sed 's/v//; s/-.*//')
+components=$(echo "$tag" | sed 's/v//; s/-.*//; s/"//')
 major=$(echo "$components" | cut -d '.' -f 1)
 minor=$(echo "$components" | cut -d '.' -f 2)
 patch=$(echo "$components" | cut -d '.' -f 3)
-echo "Tag: $TAG"
-pre=$(echo "$TAG"  | sed 's/.*-\(.*\)+.*/\1/')
+echo "Tag: $tag"
+pre=$(echo "$tag"  | sed 's/.*-\(.*\)+.*/\1/')
 echo "Major: $major"
 echo "Minor: $minor"
 echo "Patch: $patch"
