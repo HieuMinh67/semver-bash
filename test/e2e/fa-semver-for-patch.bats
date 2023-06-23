@@ -13,7 +13,7 @@ setup() {
     export release_id=$(_create_release $tag_name)
     echo "Release id: $release_id"
 
-    export pr_number=$(_create_pr "${semver_major_branch}" "E2E Test PR +semver:major - ${rand}")
+    export pr_number=$(_create_pr "${semver_major_branch}" "E2E Test PR +semver:patch - ${rand}")
 }
 
 teardown() {
@@ -28,5 +28,5 @@ teardown() {
     echo ""
 
     run semver get $pr_number
-    assert_output --partial "v2.0.0-alpha+"
+    assert_output --partial "v1.1.1-alpha+"
 }
