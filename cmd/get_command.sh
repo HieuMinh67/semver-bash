@@ -72,8 +72,12 @@ case $SEMVER_TYPE in
       alpha)
         semver="v$major.$minor.$patch-beta+$build_number"
         ;;
-      *)
+      beta)
         semver="v$major.$minor.$patch-rc+$build_number"
+        ;;
+      rc)
+        echo "rc tag already exists"
+        exit 1
         ;;
     esac
 esac
