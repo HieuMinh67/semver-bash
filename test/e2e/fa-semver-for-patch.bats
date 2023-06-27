@@ -3,7 +3,7 @@ setup() {
     _common_setup
     
     export rand=${RANDOM}
-    export tag_name="v1.1.0-alpha+${rand}"
+    export tag_name="v1.1.0-alpha+5"
 
     export semver_major_branch=$(_create_git_branch "${rand}" "semver_major")
 
@@ -24,9 +24,9 @@ teardown() {
     _delete_git_branch "${semver_major_branch}"
 }
 
-@test "test +semver:major" {
+@test "test +semver:patch" {
     echo ""
 
-    run semver get $pr_number
+    run semver get "$pr_number"
     assert_output --partial "v1.1.1-alpha+"
 }
