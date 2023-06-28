@@ -61,6 +61,10 @@ case $SEMVER_TYPE in
     ;;
 
   "patch")
+    if [ "$branch_name" == "master" ]; then
+      echo "Can not increase patch version of master branch"
+      exit 1
+    fi
     semver="v$major.$minor.$((patch+1))-alpha+$build_number"
     ;;
 
