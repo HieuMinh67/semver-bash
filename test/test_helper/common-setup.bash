@@ -65,6 +65,23 @@ _create_pr() {
     echo "${pr_number}"
 }
 
+_update_pr() {
+    local pr_number=$1
+    local title=$2
+    local body=$3
+
+    github_adaptor="${PROJECT_ROOT}"/pkg/adaptors/github
+    github_openapi_client="${github_adaptor}"/openapi/client.sh
+
+    source "${github_openapi_client}"
+    source "${github_adaptor}"/execute_github_api.sh
+
+    cd "${contributor_git_sandbox_repo}"
+
+    GITHUB_TOKEN=${GITHUB_PAT_CONTRIBUTOR}
+    execute_github_api pullsUpdate owner="${GITHUB_REPOSITORY_OWNER}" repo="${GITHUB_REPOSITORY_NAME}" pull_number="${pr_number}" title:="\"$title\"" body:="\"$body\""
+}
+
 _close_pr() {
     pr_number=$1
 
@@ -79,7 +96,7 @@ _close_pr() {
     # execute_github_api orgsGet org=BeanCloudServices
     GITHUB_TOKEN=${GITHUB_PAT_CONTRIBUTOR}
 
-    execute_github_api pullsUpdate owner="${GITHUB_REPOSITORY_OWNER}" repo="${GITHUB_REPOSITORY_NAME}" pull_number=${pr_number} state:='"closed"' --dry-run
+    execute_github_api pullsUpdate owner="${GITHUB_REPOSITORY_OWNER}" repo="${GITHUB_REPOSITORY_NAME}" pull_number="${pr_number}" state:='"closed"'
 
 }
 
