@@ -76,8 +76,6 @@ _update_pr() {
     source "${github_openapi_client}"
     source "${github_adaptor}"/execute_github_api.sh
 
-    cd "${contributor_git_sandbox_repo}"
-
     GITHUB_TOKEN=${GITHUB_PAT_CONTRIBUTOR}
     execute_github_api pullsUpdate owner="${GITHUB_REPOSITORY_OWNER}" repo="${GITHUB_REPOSITORY_NAME}" pull_number="${pr_number}" title:="\"$title\"" body:="\"$body\""
 }
