@@ -5,7 +5,4 @@ inspect_args
 
 pr_details=$(get_pr_git_port "${args[source_value]}")
 
-pr_title=$(echo "$pr_details" | jq -r ".title")
-pr_body=$(echo "$pr_details" | jq -r ".body")
-
-pr.get_semver_or_error "$pr_title" "$pr_body"
+pr.get_semver_or_error "$pr_details"

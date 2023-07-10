@@ -13,6 +13,7 @@ function pr.has_semver() {
 
     semver_pattern="\+semver:(major|minor|patch|pre|build)"
     if [[ ${pr["title"]} =~ $semver_pattern ]] || [[ ${pr["body"]} =~ $semver_pattern ]]; then
+        pr["semver_type"]=${BASH_REMATCH[1]}
         echo "true"
     else
         echo ""
