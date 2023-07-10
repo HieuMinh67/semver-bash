@@ -34,7 +34,7 @@ teardown() {
     assert_output --partial "Semver type: ${selected_type}"
 }
 
-@test "Test semver string in PR body" {
+@test "GIVEN semver string in PR body" {
     _update_pr "${pr_number}" "E2E Test PR - ${rand}" "Test body for +semver:${selected_type}"
     sleep 10 # in order for Github API to completely update PR before run test
     run semver get $pr_number
