@@ -42,7 +42,7 @@ teardown() {
     assert_output --partial "Semver type: ${selected_type}"
 }
 
-@test "Test PR does not contain semver string" {
+@test "GIVEN PR does not contain semver string" {
     _update_pr "${pr_number}" "E2E Test PR - ${rand}" "test body"
     sleep 10 # in order for Github API to completely update PR before run test
     run semver get $pr_number
