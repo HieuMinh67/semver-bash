@@ -28,7 +28,7 @@ teardown() {
     echo ""
 }
 
-@test "Test semver string in PR title" {
+@test "GIVEN semver string in PR title" {
     run semver get $pr_number
     assert_success
     assert_output --partial "Semver type: ${selected_type}"
